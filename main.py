@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import os
-
 import pydgraph
-
 import model
 
 DGRAPH_URI = os.getenv('DGRAPH_URI', 'localhost:9080')
@@ -10,10 +8,14 @@ DGRAPH_URI = os.getenv('DGRAPH_URI', 'localhost:9080')
 def print_menu():
     mm_options = {
         1: "Create data",
-        2: "Search person",
-        3: "Delete person",
-        4: "Drop All",
-        5: "Exit",
+        2: "Search user",
+        3: "favoritos del usuario",
+        4: "devoluciones del usuario",
+        5: "guardar en favoritos",
+        6: "guardar devolucion",
+        7: "recomendacion por categoria",
+        8: "Drop All",
+        9: "Exit",
     }
     for key in mm_options.keys():
         print(key, '--', mm_options[key])
@@ -41,19 +43,44 @@ def main():
     while(True):
         print_menu()
         option = int(input('Enter your choice: '))
+
         if option == 1:
             model.create_data(client)
-        if option == 2:
-            person = input("Name: ")
-            model.search_person(client, person)
-        if option == 3:
-            person = input("Name: ")
-            model.delete_person(client, person)
-        if option == 4:
+
+        elif option == 2:
+            username = input("Username: ")
+            model.search_users(client, username)
+
+        elif option == 3:
+            username = input("Username: ")
+            model.favoritos_del_usuario(client, username)
+
+        elif option == 4:
+            username = input("Username: ")
+            model.devoluciones_por_usuario(client, username)
+
+        elif option == 5:
+            username = input("Username: ")
+            producto = input("Nombre del producto: ")
+            model.guardar_en_favoritos(client, username, producto)
+
+        elif option == 6:
+            username = input("Username: ")
+            producto = input("Nombre del producto a devolver: ")
+            motivo = input("Motivo de la devolución: ")
+            model.registrar_devolucion(client, producto, motivo, username)
+
+        elif option == 7:
+            username = input("Username: ")
+            model.recomendaciones_por_categoria(client, username)
+
+        elif option == 8:
             model.drop_all(client)
-        if option == 5:
+
+        elif option == 9:
             model.drop_all(client)
             close_client_stub(client_stub)
+            print("Sesión finalizada.")
             exit(0)
 
 if __name__ == '__main__':
