@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # iteso-bdnr-dgraph
 
 A place to share dgraph app code
